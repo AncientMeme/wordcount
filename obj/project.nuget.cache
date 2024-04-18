@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "5+IGJc0jYcRmSKSq9Qqn0RJqB+alZNpLKRf2caSU6x2Ek8BUs4YSJqwsdZ78M3g2pHThiE6ZUYmizDZbOjQtPg==",
+  "success": true,
+  "projectFilePath": "C:\\projects\\wordcount\\wordcount.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\system.commandline\\2.0.0-beta4.22272.1\\system.commandline.2.0.0-beta4.22272.1.nupkg.sha512"
+  ],
+  "logs": []
+}
