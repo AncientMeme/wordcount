@@ -1,16 +1,17 @@
 
 class ArgumentParser {
-  const int CharFlag = (1 << 0);
-  const int LineFlag = (1 << 1);
-  const int WordFlag = (1 << 2);
+  const int ByteFlag = (1 << 0);
+  const int CharFlag = (1 << 1);
+  const int LineFlag = (1 << 2);
+  const int WordFlag = (1 << 3);
   private Dictionary<char, int> modeFlags;
   public string[] options {get; private set;}
-  public string filename {get; private set;}
+  public string filepath {get; private set;}
   public bool isValidCount {get; private set;}
   public ArgumentParser(string[] args) {
     // Valid options and corresponding flag bits
     modeFlags = new Dictionary<char, int>{
-      {'c', CharFlag},
+      {'c', ByteFlag},
       {'m', CharFlag},
       {'l', LineFlag},
       {'w', WordFlag}
@@ -21,12 +22,12 @@ class ArgumentParser {
 
     // Parse options only if arg count is valid
     options = new string[]{};
-    filename = "";
+    filepath = "";
     for (int i = 0; i < args.Length; ++i) {
       if (i < args.Length - 1) {
         options.Append(args[i]);
       } else {
-        filename = args[i];
+        filepath = args[i];
       }
     }
   }
@@ -45,10 +46,10 @@ class ArgumentParser {
 
   // Check if the file can be opened
   public bool IsFileAvailable() {
-    return File.Exists(filename);
+    return File.Exists(filepath);
   }
 
   public void PrintArgs() {
-    Console.WriteLine($"options: {options}, file: {filename}");
+    Console.WriteLine($"options: {options}, file: {filepath}");
   }
 }

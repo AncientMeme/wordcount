@@ -1,7 +1,7 @@
 ﻿using System;
 
 const string InvalidArgCountMessage = @"Invalid arguments
-Usage: wordcount <options> filename";
+Usage: wordcount <options> filepath";
 const string InvalidOptionMessage = @"Invalid Option:
   -c, -m Returns the character count of the file
   -l     Returns the line count of the file
@@ -23,9 +23,12 @@ if (outputMode == -1) {
 
 // Check file exists
 if (!argsParser.IsFileAvailable()) {
-  Console.WriteLine($"Cannot read file: {argsParser.filename}");
+  Console.WriteLine($"Cannot read file: {argsParser.filepath}");
   System.Environment.Exit(1);
 }
 
-argsParser.PrintArgs();
+// Insert the file into FileReader
+FileReader fr = new(argsParser.filepath);
+Console.WriteLine($"{fr.LineCount} {fr.WordCount} {fr.ByteCount} {argsParser.filepath}");
+
 System.Environment.Exit(0);

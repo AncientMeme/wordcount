@@ -1,38 +1,37 @@
 using System.IO;
 using System.Text;
 
-public class FileReader {
-  private string? filePath = null;
+class FileReader {
+  public int ByteCount {get; private set;}
+  public int CharCount {get; private set;}
+  public int LineCount {get; private set;}
+  public int WordCount {get; private set;}
+  public FileReader(string filepath) {
+    byte[] bytes = File.ReadAllBytes(filepath);
+    ByteCount = bytes.Length;
 
-  public FileReader(string path) {
-    if (File.Exists(path)) {
-      filePath = path;
-    }
-  }
-
-  public bool FileExists() {
-    return (filePath != null);
-  }
-
-  public string GetContent() {
-    if (filePath == null) {
-      return "";
-    }
-
-    StringBuilder sb = new StringBuilder();
     try {
-      StreamReader sr = new StreamReader(filePath);
-      string? line = sr.ReadLine();
-      while (line != null) {
-        sb.AppendLine(line);
-        line = sr.ReadLine();
+      StreamReader sr = new(filepath);
+      char? next = null;
+      while (sr.Peek() >= 0) {
+        next = (char)sr.Read();
+        CharCount += 1;
+        if (next == ' ') {
+          WordCount += 1;
+        }
+        if (next == '\n') {
+          WordCount += 1;
+          LineCount += 1;
+        }
       }
+
+      if (next != null) {
+        WordCount += 1;
+      }
+      
       sr.Close();
     } catch (Exception e) {
-      Console.WriteLine($"FileReader Exception: {e.Message}");
-      System.Environment.Exit(1);
+      Console.WriteLine("Exception: " + e.Message);
     }
-    
-    return sb.ToString();
-  }
+  }  
 }
