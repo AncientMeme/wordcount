@@ -1,37 +1,33 @@
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 class FileReader {
-  public int ByteCount {get; private set;}
-  public int CharCount {get; private set;}
-  public int LineCount {get; private set;}
-  public int WordCount {get; private set;}
+  string content;
+  string file;
   public FileReader(string filepath) {
-    byte[] bytes = File.ReadAllBytes(filepath);
-    ByteCount = bytes.Length;
-
-    try {
-      StreamReader sr = new(filepath);
-      char? next = null;
-      while (sr.Peek() >= 0) {
-        next = (char)sr.Read();
-        CharCount += 1;
-        if (next == ' ') {
-          WordCount += 1;
-        }
-        if (next == '\n') {
-          WordCount += 1;
-          LineCount += 1;
-        }
-      }
-
-      if (next != null) {
-        WordCount += 1;
-      }
-      
-      sr.Close();
-    } catch (Exception e) {
-      Console.WriteLine("Exception: " + e.Message);
+    file = filepath;
+    using(var reader = new StreamReader(filepath)) {
+      content = reader.ReadToEnd();
     }
-  }  
+  }
+
+  public int GetBytes() {
+    return (int)new FileInfo(file).Length;
+  }
+
+  public int GetChars() {
+    // the '\0' should be included
+    return content.Length + 1;
+  }
+
+  public int GetWords() {
+    var words = Regex.Matches(content, @"\b\w+\b").Count;
+    return words;
+  }
+
+  public int GetLines() {
+    var lines = Regex.Matches(content, "\n").Count;
+    return lines;
+  }
 }

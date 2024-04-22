@@ -1,9 +1,9 @@
 
 class ArgumentParser {
-  const int ByteFlag = (1 << 0);
-  const int CharFlag = (1 << 1);
-  const int LineFlag = (1 << 2);
-  const int WordFlag = (1 << 3);
+  public const int ByteFlag = (1 << 0);
+  public const int CharFlag = (1 << 1);
+  public const int LineFlag = (1 << 2);
+  public const int WordFlag = (1 << 3);
   private Dictionary<char, int> modeFlags;
   public string[] options {get; private set;}
   public string filepath {get; private set;}
@@ -21,11 +21,11 @@ class ArgumentParser {
     isValidCount = (args.Length > 0 && args.Length < modeFlags.Count + 1);
 
     // Parse options only if arg count is valid
-    options = new string[]{};
+    options = new string[args.Length - 1];
     filepath = "";
     for (int i = 0; i < args.Length; ++i) {
       if (i < args.Length - 1) {
-        options.Append(args[i]);
+        options[i] = args[i];
       } else {
         filepath = args[i];
       }
@@ -39,6 +39,7 @@ class ArgumentParser {
       if (option.Length != 2 || option[0] != '-' || !modeFlags.ContainsKey(option[1])) {
         return -1;
       }
+      
       outputMode |= modeFlags[option[1]];
     }
     return outputMode;
